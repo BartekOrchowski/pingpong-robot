@@ -4,6 +4,7 @@
 #include <btstack_run_loop.h>
 #include <btstack_stdio_esp32.h>
 #include <uni.h>
+#include "dynamixel_protocol.h"
 
 #include "sdkconfig.h"
 
@@ -21,6 +22,20 @@ int app_main(void)
 #endif
 #endif
 
+    uint8_t ping[16];
+
+    size_t len = dxl_build_packet(
+        1, DXL_INST_PING, NULL, 0, ping, sizeof(ping)
+    );
+
+    if (len == 10 && ping[8] == 0x19 && ping[9] == 0x4E)
+    {
+        logi("DYNAMIXEL: PING packet CRC OK\n");
+    }
+    else
+    {
+        logi("DYNAMIXEL: Packet generation ERROR\n");
+    }
     // Initialize Bluetooth stack
     btstack_init();
 
