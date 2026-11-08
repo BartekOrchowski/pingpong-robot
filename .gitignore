@@ -82,4 +82,10 @@ Desktop.ini
 # Visual Studio
 # Local development environment
 .vscode/
-.devcontainer/
+.devcontainer/# KiCad - local settings and temporary files
+*.kicad_prl
+*.lck
+*-backups/
+
+# Local editor history
+.history/
