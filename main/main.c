@@ -221,71 +221,218 @@ static bool dxl_read(uint8_t id,
     return false;
 }
 
+static bool dxl_write(uint8_t id,
+                      uint16_t address,
+                      uint16_t size,
+                      uint32_t value)
+{
+    if (size == 0 || size > 4) {
+        return false;
+    }
+
+    // Instruction and parameters
+    uint8_t body[7] = {
+        0x03,   // WRITE instruction
+        address & 0xFF,
+        address >> 8
+    };
+
+    // Convert value to Little Endian
+    for (int i = 0; i < size; i++) {
+        body[3 + i] = (value >> (8 * i)) & 0xFF;
+    }
+
+    uint8_t packet[32] = {
+        0xFF, 0xFF, 0xFD, 0x00,
+        id,
+        0x00, 0x00
+    };
+
+    int index = 7;
+
+    // Copy instruction and parameters
+    // with byte stuffing
+    for (int i = 0; i < size + 3; i++) {
+
+        packet[index++] = body[i];
+
+        if (i >= 2 &&
+            body[i - 2] == 0xFF &&
+            body[i - 1] == 0xFF &&
+            body[i] == 0xFD) {
+
+            packet[index++] = 0xFD;
+        }
+    }
+
+    // Packet length
+    uint16_t packet_length = index - 7 + 2;
+
+    packet[5] = packet_length & 0xFF;
+    packet[6] = packet_length >> 8;
+
+    // Calculate CRC
+    uint16_t crc = dxl_crc(packet, index);
+
+    packet[index++] = crc & 0xFF;
+    packet[index++] = crc >> 8;
+
+    // Send packet
+    uart_flush_input(DXL_UART);
+
+    if (uart_write_bytes(DXL_UART,
+                         packet,
+                         index) != index) {
+        return false;
+    }
+
+    if (uart_wait_tx_done(DXL_UART,
+                         pdMS_TO_TICKS(100)) != ESP_OK) {
+        return false;
+    }
+
+    // Receive echo and status packet
+    uint8_t rx_data[128];
+
+    int length = uart_read_bytes(
+        DXL_UART,
+        rx_data,
+        sizeof(rx_data),
+        pdMS_TO_TICKS(100)
+    );
+
+    // Search for WRITE status packet
+    for (int i = 0; i + 11 <= length; i++) {
+
+        const uint8_t *p = &rx_data[i];
+
+        if (p[0] != 0xFF ||
+            p[1] != 0xFF ||
+            p[2] != 0xFD ||
+            p[3] != 0x00 ||
+            p[4] != id ||
+            p[5] != 0x04 ||
+            p[6] != 0x00 ||
+            p[7] != 0x55) {
+
+            continue;
+        }
+
+        uint16_t received_crc =
+            p[9] | ((uint16_t)p[10] << 8);
+
+        if (dxl_crc(p, 9) != received_crc) {
+            continue;
+        }
+
+        uint8_t error = p[8];
+
+        if (error & 0x7F) {
+
+            ESP_LOGE(TAG,
+                     "WRITE instruction error: 0x%02X",
+                     (unsigned)error);
+
+            return false;
+        }
+
+        if (error & 0x80) {
+
+            ESP_LOGW(TAG,
+                     "Hardware alert active");
+        }
+
+        ESP_LOGI(TAG,
+                 "WRITE accepted: address=%u, value=%lu",
+                 (unsigned)address,
+                 (unsigned long)value);
+
+        return true;
+    }
+
+    ESP_LOGE(TAG,
+             "WRITE response not received, address=%u",
+             (unsigned)address);
+
+    return false;
+}
+
 void app_main(void)
 {
     uint32_t value;
 
     dxl_uart_init();
 
-    ESP_LOGI(TAG, "DYNAMIXEL diagnostics started");
+    ESP_LOGI(TAG, "DYNAMIXEL WRITE test");
 
     vTaskDelay(pdMS_TO_TICKS(2000));
 
+    // Disable torque
+    if (!dxl_write(1, 64, 1, 0)) {
+        return;
+    }
+
+    // Verify that torque is disabled
+    if (!dxl_read(1, 64, 1, &value) || value != 0) {
+
+        ESP_LOGE(TAG, "Torque is not disabled");
+        return;
+    }
+
+    // Read current operating mode
+    if (!dxl_read(1, 11, 1, &value)) {
+        return;
+    }
+
+    ESP_LOGI(TAG,
+             "Current operating mode: %lu",
+             (unsigned long)value);
+
+    // Change mode only if necessary
+    if (value != 1) {
+
+        if (!dxl_write(1, 11, 1, 1)) {
+            return;
+        }
+    }
+
+    // Verify operating mode
+    if (!dxl_read(1, 11, 1, &value) || value != 1) {
+
+        ESP_LOGE(TAG, "Mode configuration failed");
+        return;
+    }
+
+    ESP_LOGI(TAG, "Velocity Control Mode configured");
+
+    // Set initial goal velocity to zero
+    if (!dxl_write(1, 104, 4, 0)) {
+        return;
+    }
+
+    // Test WRITE with LED
     while (1) {
 
-        ESP_LOGI(TAG, "-------------------------");
+        if (dxl_write(1, 65, 1, 1)) {
 
-        if (dxl_read(1, 70, 1, &value)) {
-
-            ESP_LOGI(TAG,
-                     "Hardware Error Status: 0x%02lX",
-                     (unsigned long)value);
+            if (dxl_read(1, 65, 1, &value)) {
+                ESP_LOGI(TAG,
+                         "LED register: %lu",
+                         (unsigned long)value);
+            }
         }
 
-        if (dxl_read(1, 144, 2, &value)) {
+        vTaskDelay(pdMS_TO_TICKS(1000));
 
-            ESP_LOGI(TAG,
-                     "Input Voltage: %.1f V",
-                     value * 0.1);
+        if (dxl_write(1, 65, 1, 0)) {
+
+            if (dxl_read(1, 65, 1, &value)) {
+                ESP_LOGI(TAG,
+                         "LED register: %lu",
+                         (unsigned long)value);
+            }
         }
 
-        if (dxl_read(1, 34, 2, &value)) {
-
-            ESP_LOGI(TAG,
-                     "Min Voltage Limit: %.1f V",
-                     value * 0.1);
-        }
-
-        if (dxl_read(1, 146, 1, &value)) {
-
-            ESP_LOGI(TAG,
-                     "Temperature: %lu C",
-                     (unsigned long)value);
-        }
-
-        if (dxl_read(1, 64, 1, &value)) {
-
-            ESP_LOGI(TAG,
-                     "Torque Enable: %lu",
-                     (unsigned long)value);
-        }
-
-        if (dxl_read(1, 11, 1, &value)) {
-
-            ESP_LOGI(TAG,
-                     "Operating Mode: %lu",
-                     (unsigned long)value);
-        }
-
-        if (dxl_read(1, 128, 4, &value)) {
-
-            int32_t velocity = (int32_t)value;
-
-            ESP_LOGI(TAG,
-                     "Present Velocity: %.2f RPM",
-                     velocity * 0.229);
-        }
-
-        vTaskDelay(pdMS_TO_TICKS(2000));
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
