@@ -3,7 +3,7 @@
 	(generator "eeschema")
 	(generator_version "10.0")
 	(uuid "737c83ac-45d0-4397-969f-65b53a356dd7")
-	(paper "A4")
+	(paper "A5")
 	(lib_symbols
 		(symbol "esp32_30pin_revised:ESP32_30Pin"
 			(exclude_from_sim no)
@@ -1009,14 +1009,14 @@
 		)
 	)
 	(junction
-		(at 158.75 106.68)
+		(at 128.27 85.09)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "3640f5bd-ca46-47d5-b85b-7a1180ec91ef")
 	)
 	(wire
 		(pts
-			(xy 114.3 95.25) (xy 124.46 95.25)
+			(xy 83.82 73.66) (xy 93.98 73.66)
 		)
 		(stroke
 			(width 0)
@@ -1026,7 +1026,7 @@
 	)
 	(wire
 		(pts
-			(xy 158.75 106.68) (xy 158.75 110.49)
+			(xy 128.27 85.09) (xy 128.27 88.9)
 		)
 		(stroke
 			(width 0)
@@ -1036,7 +1036,7 @@
 	)
 	(wire
 		(pts
-			(xy 114.3 82.55) (xy 124.46 82.55)
+			(xy 83.82 60.96) (xy 93.98 60.96)
 		)
 		(stroke
 			(width 0)
@@ -1046,7 +1046,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 95.25) (xy 163.83 95.25)
+			(xy 121.92 73.66) (xy 133.35 73.66)
 		)
 		(stroke
 			(width 0)
@@ -1056,7 +1056,7 @@
 	)
 	(wire
 		(pts
-			(xy 114.3 80.01) (xy 124.46 80.01)
+			(xy 83.82 58.42) (xy 93.98 58.42)
 		)
 		(stroke
 			(width 0)
@@ -1066,7 +1066,7 @@
 	)
 	(wire
 		(pts
-			(xy 114.3 72.39) (xy 124.46 72.39)
+			(xy 83.82 50.8) (xy 93.98 50.8)
 		)
 		(stroke
 			(width 0)
@@ -1076,7 +1076,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 92.71) (xy 158.75 92.71)
+			(xy 121.92 71.12) (xy 128.27 71.12)
 		)
 		(stroke
 			(width 0)
@@ -1086,7 +1086,7 @@
 	)
 	(wire
 		(pts
-			(xy 158.75 92.71) (xy 158.75 106.68)
+			(xy 128.27 71.12) (xy 128.27 85.09)
 		)
 		(stroke
 			(width 0)
@@ -1096,7 +1096,7 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 92.71) (xy 121.92 106.68)
+			(xy 91.44 71.12) (xy 91.44 85.09)
 		)
 		(stroke
 			(width 0)
@@ -1106,7 +1106,7 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 106.68) (xy 158.75 106.68)
+			(xy 91.44 85.09) (xy 128.27 85.09)
 		)
 		(stroke
 			(width 0)
@@ -1116,7 +1116,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 82.55) (xy 158.75 82.55)
+			(xy 121.92 60.96) (xy 128.27 60.96)
 		)
 		(stroke
 			(width 0)
@@ -1126,7 +1126,7 @@
 	)
 	(wire
 		(pts
-			(xy 124.46 92.71) (xy 121.92 92.71)
+			(xy 93.98 71.12) (xy 91.44 71.12)
 		)
 		(stroke
 			(width 0)
@@ -1136,7 +1136,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 80.01) (xy 158.75 80.01)
+			(xy 121.92 58.42) (xy 128.27 58.42)
 		)
 		(stroke
 			(width 0)
@@ -1146,7 +1146,7 @@
 	)
 	(global_label "LAUNCHER_EN"
 		(shape output)
-		(at 114.3 82.55 180)
+		(at 83.82 60.96 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1156,7 +1156,7 @@
 		)
 		(uuid "04d8f4b7-5eee-4194-bff5-a390656f9db2")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 98.0705 82.55 0)
+			(at 67.5905 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1170,7 +1170,7 @@
 	)
 	(global_label "FEEDER_HOME"
 		(shape input)
-		(at 114.3 72.39 180)
+		(at 83.82 50.8 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1180,7 +1180,7 @@
 		)
 		(uuid "5133aa84-8888-475f-b85b-1dccb2355d96")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 98.0102 72.39 0)
+			(at 67.5302 50.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1194,7 +1194,7 @@
 	)
 	(global_label "DXL_TX"
 		(shape output)
-		(at 158.75 80.01 0)
+		(at 128.27 58.42 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1204,7 +1204,7 @@
 		)
 		(uuid "5a229f6b-35c0-414a-8cbf-6e7a8d84c83c")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 168.3875 80.01 0)
+			(at 137.9075 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1218,7 +1218,7 @@
 	)
 	(global_label "DXL_RX"
 		(shape input)
-		(at 158.75 82.55 0)
+		(at 128.27 60.96 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1228,7 +1228,7 @@
 		)
 		(uuid "6aba84a0-85e1-41e3-8b1c-80edea9f6e44")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 168.6899 82.55 0)
+			(at 138.2099 60.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1242,7 +1242,7 @@
 	)
 	(global_label "+5V_CTRL"
 		(shape input)
-		(at 114.3 95.25 180)
+		(at 83.82 73.66 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1252,7 +1252,7 @@
 		)
 		(uuid "6d06ab35-faf4-467d-9db0-186af01d6021")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 101.941 95.25 0)
+			(at 71.461 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1266,7 +1266,7 @@
 	)
 	(global_label "+3V3_CTRL"
 		(shape output)
-		(at 163.83 95.25 0)
+		(at 133.35 73.66 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1276,7 +1276,7 @@
 		)
 		(uuid "f861a3ec-13a3-4b57-af4c-c2d30f64f370")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 177.3985 95.25 0)
+			(at 146.9185 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1290,7 +1290,7 @@
 	)
 	(global_label "FEEDER_PWM"
 		(shape output)
-		(at 114.3 80.01 180)
+		(at 83.82 58.42 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1300,7 +1300,7 @@
 		)
 		(uuid "f916c6ad-0670-474f-8524-ced796d84b1f")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 99.0988 80.01 0)
+			(at 68.6188 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1314,7 +1314,7 @@
 	)
 	(symbol
 		(lib_id "esp32_30pin_revised:ESP32_30Pin")
-		(at 138.43 77.47 270)
+		(at 107.95 55.88 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1325,7 +1325,7 @@
 		(fields_autoplaced yes)
 		(uuid "3d1de449-0ede-4aad-8884-6a624e4af51e")
 		(property "Reference" "U3"
-			(at 138.43 48.26 90)
+			(at 107.95 26.67 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1335,7 +1335,7 @@
 			)
 		)
 		(property "Value" ""
-			(at 138.43 77.47 0)
+			(at 107.95 55.88 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1345,7 +1345,7 @@
 			)
 		)
 		(property "Footprint" "ESP32_30pin"
-			(at 138.43 50.8 90)
+			(at 107.95 29.21 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1356,7 +1356,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 138.43 77.47 0)
+			(at 107.95 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1367,7 +1367,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 138.43 77.47 0)
+			(at 107.95 55.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1478,7 +1478,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 158.75 110.49 0)
+		(at 128.27 88.9 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1489,7 +1489,7 @@
 		(fields_autoplaced yes)
 		(uuid "ae6b5d67-786d-4d17-84be-8a48e76792ff")
 		(property "Reference" "#PWR04"
-			(at 158.75 116.84 0)
+			(at 128.27 95.25 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1500,7 +1500,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 158.75 115.57 0)
+			(at 128.27 93.98 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1510,7 +1510,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 158.75 110.49 0)
+			(at 128.27 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1521,7 +1521,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 158.75 110.49 0)
+			(at 128.27 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1532,7 +1532,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 158.75 110.49 0)
+			(at 128.27 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
