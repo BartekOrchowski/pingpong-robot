@@ -1,6 +1,9 @@
 
 #include <stdint.h>
 #include <uni.h>
+#include "drive_control.h"
+
+static uni_hid_device_t *drive_controller = NULL;
 
 // Called during platform initialization
 static void controller_init(int argc, const char** argv)
@@ -30,6 +33,13 @@ static void controller_connected(uni_hid_device_t* d)
 static void controller_disconnected(uni_hid_device_t* d)
 {
     logi("PINGPONG: Controller disconnected: %p\n", d);
+
+    if (d == drive_controller) {
+
+        drive_controller = NULL;
+
+        drive_control_stop();
+    }
 }
 
 // Controller is ready to send input data
@@ -43,15 +53,28 @@ static uni_error_t controller_ready(uni_hid_device_t* d)
 static void controller_data(uni_hid_device_t* d,
                             uni_controller_t* ctl)
 {
-    (void)d;
-
     if (ctl->klass != UNI_CONTROLLER_CLASS_GAMEPAD)
         return;
 
+    // Select active gamepad
+    if (drive_controller == NULL) {
+
+        drive_controller = d;
+    }
+
+    // Ignore other controllers
+    if (d != drive_controller) {
+        return;
+    }
+
     const uni_gamepad_t* gp = &ctl->gamepad;
+
+    // Send joystick data to drive control task
+    drive_control_submit(gp->axis_y);
 
     // Limit diagnostic logging
     static uint32_t counter = 0;
+
     if (++counter % 10 != 0)
         return;
 
