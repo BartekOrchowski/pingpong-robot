@@ -5,4 +5,4 @@ idf_component_register(
         "dynamixel_protocol.c"
     INCLUDE_DIRS "."
     REQUIRES bluepad32 btstack
-)
+) 
