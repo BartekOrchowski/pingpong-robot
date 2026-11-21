@@ -1,57 +1,4 @@
-
-// #include <stddef.h>
-// #include <btstack_port_esp32.h>
-// #include <btstack_run_loop.h>
-// #include <btstack_stdio_esp32.h>
-// #include <uni.h>
-// #include "dynamixel_protocol.h"
-
-// #include "sdkconfig.h"
-
-// #ifndef CONFIG_BLUEPAD32_PLATFORM_CUSTOM
-// #error "Bluepad32 custom platform must be enabled"
-// #endif
-
-// struct uni_platform* get_my_platform(void);
-
-// int app_main(void)
-// {
-// #ifdef CONFIG_ESP_CONSOLE_UART
-// #ifndef CONFIG_BLUEPAD32_USB_CONSOLE_ENABLE
-//     btstack_stdio_init();
-// #endif
-// #endif
-
-//     uint8_t ping[16];
-
-//     size_t len = dxl_build_packet(
-//         1, DXL_INST_PING, NULL, 0, ping, sizeof(ping)
-//     );
-
-//     if (len == 10 && ping[8] == 0x19 && ping[9] == 0x4E)
-//     {
-//         logi("DYNAMIXEL: PING packet CRC OK\n");
-//     }
-//     else
-//     {
-//         logi("DYNAMIXEL: Packet generation ERROR\n");
-//     }
-//     // Initialize Bluetooth stack
-//     btstack_init();
-
-//     // Register our custom controller platform
-//     uni_platform_set_custom(get_my_platform());
-
-//     // Initialize Bluepad32
-//     uni_init(0, NULL);
-
-//     // Start processing Bluetooth events
-//     btstack_run_loop_execute();
-
-//     return 0;
-// }
-
-
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdint.h>
 
@@ -70,14 +17,7 @@
 
 static const char *TAG = "DXL_TEST";
 
-// PING packet - DYNAMIXEL Protocol 2.0, ID = 1
-static const uint8_t ping_packet[] = {
-    0xFF, 0xFF, 0xFD, 0x00,
-    0x01,
-    0x03, 0x00,
-    0x01,
-    0x19, 0x4E
-};
+
 
 // CRC-16 used by DYNAMIXEL Protocol 2.0
 static uint16_t dxl_crc(const uint8_t *data, size_t length)
@@ -137,108 +77,215 @@ static void dxl_uart_init(void)
     ESP_LOGI(TAG, "UART initialized");
 }
 
-// Search for a valid PING response
-static void dxl_check_response(
-    const uint8_t *data,
-    int length
-)
+static bool dxl_read(uint8_t id,
+                     uint16_t address,
+                     uint16_t size,
+                     uint32_t *value)
 {
-    for (int i = 0; i + 14 <= length; i++) {
+    // This version reads registers containing 1-4 bytes
+    if (size == 0 || size > 4 || value == NULL) {
+        return false;
+    }
 
-        const uint8_t *p = &data[i];
+    uint8_t packet[14] = {
+        0xFF, 0xFF, 0xFD, 0x00,
+        id,
+        0x07, 0x00,
+        0x02,
+
+        (uint8_t)(address & 0xFF),
+        (uint8_t)(address >> 8),
+
+        (uint8_t)(size & 0xFF),
+        (uint8_t)(size >> 8),
+
+        0x00, 0x00
+    };
+
+    // Calculate CRC
+    uint16_t crc = dxl_crc(packet, 12);
+
+    packet[12] = crc & 0xFF;
+    packet[13] = crc >> 8;
+
+    // Clear previous data and send request
+    uart_flush_input(DXL_UART);
+
+    if (uart_write_bytes(DXL_UART,
+                         packet,
+                         sizeof(packet)) != sizeof(packet)) {
+        return false;
+    }
+
+    if (uart_wait_tx_done(DXL_UART,
+                         pdMS_TO_TICKS(100)) != ESP_OK) {
+        return false;
+    }
+
+    // Receive echo and status packet
+    uint8_t rx_data[128];
+
+    int length = uart_read_bytes(
+        DXL_UART,
+        rx_data,
+        sizeof(rx_data),
+        pdMS_TO_TICKS(100)
+    );
+
+    // Search for the status packet
+    for (int i = 0; i + 11 <= length; i++) {
+
+        const uint8_t *p = &rx_data[i];
 
         if (p[0] != 0xFF ||
             p[1] != 0xFF ||
             p[2] != 0xFD ||
             p[3] != 0x00 ||
-            p[4] != 0x01 ||
-            p[5] != 0x07 ||
-            p[6] != 0x00 ||
+            p[4] != id ||
             p[7] != 0x55) {
 
             continue;
         }
 
-        uint16_t received_crc =
-            p[12] | ((uint16_t)p[13] << 8);
+        uint16_t packet_length =
+            p[5] | ((uint16_t)p[6] << 8);
 
-        if (dxl_crc(p, 12) != received_crc) {
-            ESP_LOGW(TAG, "Invalid CRC");
+        int total = packet_length + 7;
+
+        if (packet_length < 4 ||
+            i + total > length) {
             continue;
         }
 
-        uint16_t model =
-            p[9] | ((uint16_t)p[10] << 8);
+        // Validate CRC before removing byte stuffing
+        uint16_t received_crc =
+            p[total - 2] |
+            ((uint16_t)p[total - 1] << 8);
 
-        ESP_LOGI(TAG, "DYNAMIXEL RESPONSE OK");
-        ESP_LOGI(TAG, "ID: %u", p[4]);
-        ESP_LOGI(TAG, "Error: 0x%02X", p[8]);
-        ESP_LOGI(TAG, "Model number: %u", model);
-        ESP_LOGI(TAG, "Firmware version: %u", p[11]);
+        if (dxl_crc(p, total - 2) != received_crc) {
+            continue;
+        }
 
-        return;
+        // Remove byte stuffing
+        uint8_t body[128];
+        int body_length = 0;
+
+        for (int j = 7; j < total - 2; j++) {
+
+            body[body_length++] = p[j];
+
+            if (j >= 9 &&
+                j + 1 < total - 2 &&
+                p[j - 2] == 0xFF &&
+                p[j - 1] == 0xFF &&
+                p[j] == 0xFD &&
+                p[j + 1] == 0xFD) {
+
+                j++;
+            }
+        }
+
+        uint8_t error = body[1];
+
+        // Ignore Alert for diagnostic reads,
+        // but reject instruction errors
+        if (error & 0x7F) {
+
+            ESP_LOGW(TAG,
+                     "Instruction error: 0x%02X",
+                     (unsigned)error);
+
+            return false;
+        }
+
+        if (body_length != size + 2) {
+            continue;
+        }
+
+        // Convert Little Endian bytes to a value
+        *value = 0;
+
+        for (int j = 0; j < size; j++) {
+
+            *value |=
+                (uint32_t)body[2 + j] << (8 * j);
+        }
+
+        return true;
     }
 
-    ESP_LOGW(TAG, "No valid status packet");
+    ESP_LOGW(TAG,
+             "Read failed, address: %u",
+             (unsigned)address);
+
+    return false;
 }
 
 void app_main(void)
 {
-    uint8_t rx_data[128];
+    uint32_t value;
 
     dxl_uart_init();
 
-    ESP_LOGI(TAG, "Starting DYNAMIXEL PING test");
+    ESP_LOGI(TAG, "DYNAMIXEL diagnostics started");
 
     vTaskDelay(pdMS_TO_TICKS(2000));
 
     while (1) {
 
-        uart_flush_input(DXL_UART);
+        ESP_LOGI(TAG, "-------------------------");
 
-        ESP_LOGI(TAG, "Sending PING");
+        if (dxl_read(1, 70, 1, &value)) {
 
-        ESP_LOG_BUFFER_HEX(
-            TAG,
-            ping_packet,
-            sizeof(ping_packet)
-        );
-
-        uart_write_bytes(
-            DXL_UART,
-            ping_packet,
-            sizeof(ping_packet)
-        );
-
-        uart_wait_tx_done(
-            DXL_UART,
-            pdMS_TO_TICKS(100)
-        );
-
-        int length = uart_read_bytes(
-            DXL_UART,
-            rx_data,
-            sizeof(rx_data),
-            pdMS_TO_TICKS(100)
-        );
-
-        if (length > 0) {
-
-            ESP_LOGI(TAG, "Received %d bytes", length);
-
-            ESP_LOG_BUFFER_HEX(
-                TAG,
-                rx_data,
-                length
-            );
-
-            dxl_check_response(rx_data, length);
-
-        } else {
-
-            ESP_LOGW(TAG, "No response");
+            ESP_LOGI(TAG,
+                     "Hardware Error Status: 0x%02lX",
+                     (unsigned long)value);
         }
 
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        if (dxl_read(1, 144, 2, &value)) {
+
+            ESP_LOGI(TAG,
+                     "Input Voltage: %.1f V",
+                     value * 0.1);
+        }
+
+        if (dxl_read(1, 34, 2, &value)) {
+
+            ESP_LOGI(TAG,
+                     "Min Voltage Limit: %.1f V",
+                     value * 0.1);
+        }
+
+        if (dxl_read(1, 146, 1, &value)) {
+
+            ESP_LOGI(TAG,
+                     "Temperature: %lu C",
+                     (unsigned long)value);
+        }
+
+        if (dxl_read(1, 64, 1, &value)) {
+
+            ESP_LOGI(TAG,
+                     "Torque Enable: %lu",
+                     (unsigned long)value);
+        }
+
+        if (dxl_read(1, 11, 1, &value)) {
+
+            ESP_LOGI(TAG,
+                     "Operating Mode: %lu",
+                     (unsigned long)value);
+        }
+
+        if (dxl_read(1, 128, 4, &value)) {
+
+            int32_t velocity = (int32_t)value;
+
+            ESP_LOGI(TAG,
+                     "Present Velocity: %.2f RPM",
+                     velocity * 0.229);
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
