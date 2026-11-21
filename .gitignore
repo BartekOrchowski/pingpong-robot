@@ -89,3 +89,9 @@ Desktop.ini
 
 # Local editor history
 .history/
+
+# Development environment
+.devcontainer/
+
+# Generated KiCad documentation
+hardware/pingpong-robot-hw/exports/
