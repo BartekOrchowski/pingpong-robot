@@ -525,10 +525,18 @@
 		)
 	)
 	(junction
-		(at 153.67 48.26)
+		(at 81.28 74.93)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "19a1cc09-9401-433c-81ba-eb23051aeb2c")
+	)
+	(no_connect
+		(at 157.48 45.72)
+		(uuid "1a564e1a-161f-4f06-8a57-635c5409fd0f")
+	)
+	(no_connect
+		(at 95.25 41.91)
+		(uuid "95682e1f-4638-49a4-acf6-135c8c98a450")
 	)
 	(wire
 		(pts
@@ -552,7 +560,7 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 48.26) (xy 142.24 48.26)
+			(xy 81.28 74.93) (xy 69.85 74.93)
 		)
 		(stroke
 			(width 0)
@@ -572,7 +580,7 @@
 	)
 	(wire
 		(pts
-			(xy 168.91 40.64) (xy 153.67 40.64)
+			(xy 96.52 67.31) (xy 81.28 67.31)
 		)
 		(stroke
 			(width 0)
@@ -582,7 +590,7 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 40.64) (xy 153.67 48.26)
+			(xy 81.28 67.31) (xy 81.28 74.93)
 		)
 		(stroke
 			(width 0)
@@ -592,7 +600,7 @@
 	)
 	(wire
 		(pts
-			(xy 168.91 62.23) (xy 153.67 62.23)
+			(xy 96.52 88.9) (xy 81.28 88.9)
 		)
 		(stroke
 			(width 0)
@@ -622,16 +630,6 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 41.91) (xy 95.25 41.91)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "995c0da3-999b-46c5-a26e-02e4b709ea91")
-	)
-	(wire
-		(pts
 			(xy 83.82 44.45) (xy 95.25 44.45)
 		)
 		(stroke
@@ -642,7 +640,27 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 62.23) (xy 153.67 48.26)
+			(xy 146.05 43.18) (xy 157.48 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9ba2b41e-6ad7-4bae-9f3e-125f95aef000")
+	)
+	(wire
+		(pts
+			(xy 157.48 48.26) (xy 146.05 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a2869a8c-ac31-43a0-8462-ce3ecada042f")
+	)
+	(wire
+		(pts
+			(xy 81.28 88.9) (xy 81.28 74.93)
 		)
 		(stroke
 			(width 0)
@@ -652,7 +670,7 @@
 	)
 	(wire
 		(pts
-			(xy 142.24 48.26) (xy 142.24 52.07)
+			(xy 69.85 74.93) (xy 69.85 78.74)
 		)
 		(stroke
 			(width 0)
@@ -680,9 +698,19 @@
 		)
 		(uuid "e3ca377c-e80c-4298-bb1d-dc2d2fca7cfd")
 	)
+	(wire
+		(pts
+			(xy 146.05 48.26) (xy 146.05 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f02e7a4e-f1a0-46ba-a6da-a2967d3db6c9")
+	)
 	(global_label "+11V_CTRL"
 		(shape input)
-		(at 168.91 43.18 180)
+		(at 96.52 69.85 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -692,7 +720,7 @@
 		)
 		(uuid "0383e7ca-7502-44b3-a135-13dfcc435273")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 155.3415 43.18 0)
+			(at 82.9515 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -754,7 +782,7 @@
 	)
 	(global_label "DXL_DATA"
 		(shape input)
-		(at 168.91 67.31 180)
+		(at 96.52 93.98 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -764,7 +792,7 @@
 		)
 		(uuid "35db00d7-dc1e-4e91-87fd-d0a1cd62307a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 157.0348 67.31 0)
+			(at 84.6448 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -778,7 +806,7 @@
 	)
 	(global_label "DXL_DATA"
 		(shape input)
-		(at 168.91 45.72 180)
+		(at 96.52 72.39 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -788,7 +816,7 @@
 		)
 		(uuid "4b2a5659-6f4d-49ec-9df4-8318138fff30")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 157.0348 45.72 0)
+			(at 84.6448 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -800,8 +828,8 @@
 			)
 		)
 	)
-	(global_label "5V"
-		(shape output)
+	(global_label "+5V_CTRL"
+		(shape input)
 		(at 83.82 44.45 180)
 		(fields_autoplaced yes)
 		(effects
@@ -812,7 +840,7 @@
 		)
 		(uuid "8b876083-258e-4ff3-aa1d-d0e4cba7b00c")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 78.5367 44.45 0)
+			(at 71.461 44.45 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -826,7 +854,7 @@
 	)
 	(global_label "+11V_CTRL"
 		(shape input)
-		(at 168.91 64.77 180)
+		(at 96.52 91.44 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -836,7 +864,7 @@
 		)
 		(uuid "a9623476-256d-4674-9ec3-4b651f3665c2")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 155.3415 64.77 0)
+			(at 82.9515 91.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -850,7 +878,7 @@
 	)
 	(global_label "DXL_DATA"
 		(shape output)
-		(at 83.82 41.91 180)
+		(at 146.05 43.18 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -860,7 +888,7 @@
 		)
 		(uuid "e7700c16-3e59-4122-b49d-5e5ea5ca0441")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 71.9448 41.91 0)
+			(at 134.1748 43.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -898,7 +926,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
-		(at 173.99 43.18 0)
+		(at 101.6 69.85 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -909,7 +937,7 @@
 		(fields_autoplaced yes)
 		(uuid "0e409a22-f3f0-45a0-92b9-3b5c32778dba")
 		(property "Reference" "J2"
-			(at 176.53 41.9099 0)
+			(at 104.14 68.5799 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -920,7 +948,7 @@
 			)
 		)
 		(property "Value" "DXL_LEFT_XL430"
-			(at 176.53 44.4499 0)
+			(at 104.14 71.1199 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -931,7 +959,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 173.99 43.18 0)
+			(at 101.6 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -942,7 +970,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 173.99 43.18 0)
+			(at 101.6 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -953,7 +981,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 173.99 43.18 0)
+			(at 101.6 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1061,7 +1089,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
-		(at 173.99 64.77 0)
+		(at 162.56 45.72 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1070,9 +1098,9 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "71ffe146-54cc-40c2-842f-30965c453b93")
-		(property "Reference" "J3"
-			(at 176.53 63.4999 0)
+		(uuid "4e3b6416-eac9-40d9-8cd0-4880f4ce7dda")
+		(property "Reference" "J8"
+			(at 165.1 44.4499 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1082,8 +1110,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "DXL_RIGHT_XL430"
-			(at 176.53 66.0399 0)
+		(property "Value" "DXL_ADAPTER_OUTPUT"
+			(at 165.1 46.9899 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1094,7 +1122,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 173.99 64.77 0)
+			(at 162.56 45.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1105,7 +1133,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 173.99 64.77 0)
+			(at 162.56 45.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1116,7 +1144,92 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 173.99 64.77 0)
+			(at 162.56 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "f4384fc9-628d-4204-a698-8ac606a5152f")
+		)
+		(pin "3"
+			(uuid "b079faba-7ec6-40c7-a4f7-4821d516631a")
+		)
+		(pin "1"
+			(uuid "8db9fa59-71e3-4acd-b487-8b58700eb68a")
+		)
+		(instances
+			(project "pingpong-robot-hw"
+				(path "/49189804-ef94-4fff-a392-9e8284ecf6a9/3d4d2a25-0b9f-4038-a6f8-893ac785672f"
+					(reference "J8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 101.6 91.44 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "71ffe146-54cc-40c2-842f-30965c453b93")
+		(property "Reference" "J3"
+			(at 104.14 90.1699 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "DXL_RIGHT_XL430"
+			(at 104.14 92.7099 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 101.6 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 101.6 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 101.6 91.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1167,7 +1280,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "DXL_ADAPTER_OUTPUT"
+		(property "Value" "DXL_ADAPTER_5vINPUT"
 			(at 102.87 45.7199 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1397,7 +1510,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 142.24 52.07 0)
+		(at 69.85 78.74 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1408,7 +1521,7 @@
 		(fields_autoplaced yes)
 		(uuid "bc4d63a3-c40c-448b-bfdc-1f09e064896a")
 		(property "Reference" "#PWR05"
-			(at 142.24 58.42 0)
+			(at 69.85 85.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1419,7 +1532,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 142.24 57.15 0)
+			(at 69.85 83.82 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1429,7 +1542,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 142.24 52.07 0)
+			(at 69.85 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1440,7 +1553,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 142.24 52.07 0)
+			(at 69.85 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1451,7 +1564,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 142.24 52.07 0)
+			(at 69.85 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1468,6 +1581,84 @@
 			(project "pingpong-robot-hw"
 				(path "/49189804-ef94-4fff-a392-9e8284ecf6a9/3d4d2a25-0b9f-4038-a6f8-893ac785672f"
 					(reference "#PWR05")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 146.05 50.8 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "be780cd8-5d01-4575-ab6e-4a33177520ec")
+		(property "Reference" "#PWR012"
+			(at 146.05 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 146.05 55.88 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 146.05 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 146.05 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 146.05 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bfc0f63e-4527-4c5d-9786-05447ce76b8a")
+		)
+		(instances
+			(project "pingpong-robot-hw"
+				(path "/49189804-ef94-4fff-a392-9e8284ecf6a9/3d4d2a25-0b9f-4038-a6f8-893ac785672f"
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)

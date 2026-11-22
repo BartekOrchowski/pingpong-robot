@@ -1308,7 +1308,7 @@
 				)
 			)
 		)
-		(property "Value" "DC-DC 5V"
+		(property "Value" "LM2596S_5V_MODULE"
 			(at 157.48 26.67 0)
 			(show_name no)
 			(do_not_autoplace no)
